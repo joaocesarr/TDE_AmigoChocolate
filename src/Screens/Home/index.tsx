@@ -9,6 +9,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 export function Home() {
     const [gruposUsuario, setGruposUsuario] = useState<any[]>([]);
     const [grupoSorteado, setGrupoSorteado] = useState<any>(null); // Estado para armazenar o grupo sorteado
+    const [ultimoConvidado, setUltimoConvidado] = useState<string | null>(null); // Estado para armazenar o último convidado
     const navigation = useNavigation<routesType>();
     const focus = useIsFocused();
 
@@ -33,7 +34,19 @@ export function Home() {
             setGrupoSorteado(grupoSorteado);
 
             // Exibir alerta com o nome do grupo sorteado
-            Alert.alert("Grupo Sorteado", grupoSorteado.nome); // Substitua 'nome' pelo campo correto do seu objeto de grupo
+            Alert.alert("Grupo Sorteado", grupoSorteado.nome); 
+        }
+    }
+
+    function handleConvidar() {
+        if (grupoSorteado) {
+            // Simular o convite para o último convidado (neste caso, "Lucas")
+            const convidado = "Lucas";
+            setUltimoConvidado(convidado);
+            // Exibir mensagem de sucesso
+            Alert.alert("Convidado", `Você convidou ${convidado} para seu grupo.`);
+        } else {
+            Alert.alert("Erro", "Por favor, sorteie um grupo antes de convidar alguém.");
         }
     }
 
@@ -70,6 +83,13 @@ export function Home() {
             <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate("RegistrationGroup") }}>
                 <Text style={styles.buttonText}>Iniciar</Text>
             </TouchableOpacity>
+
+            {/* Novo botão para convidar */}
+            {grupoSorteado && (
+                <TouchableOpacity style={styles.button} onPress={handleConvidar}>
+                    <Text style={styles.buttonText}>Convidar Pessoas</Text>
+                </TouchableOpacity>
+            )}
         </View>
     );
 }
